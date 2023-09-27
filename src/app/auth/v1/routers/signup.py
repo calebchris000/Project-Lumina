@@ -10,4 +10,4 @@ service = SignupService
 
 @signup_router.post('/')
 async def signup(data_in: SignupIn):
-    return await SignupService.signup_user(data_in=data_in)
+    return await SignupService.signup_User(data_in=data_in)
