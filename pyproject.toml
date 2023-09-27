@@ -1,0 +1,23 @@
+[tool.poetry]
+name = "src"
+version = "0.1.0"
+description = "The comprehensive project for School Management System"
+authors = ["Caleb Nwaizu <calebchris000@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+tortoise = "^0.1.1"
+tortoise-orm = "^0.20.0"
+fastapi = "^0.103.1"
+pydantic = "^2.4.1"
+aerich = "^0.7.2"
+uvicorn = "^0.23.2"
+
+
+[tool.poetry.scripts]
+server = {callable = 'bootstrap:run_server'}
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
