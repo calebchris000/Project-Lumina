@@ -16,11 +16,11 @@ class BaseModel(Model):
 
 class User(BaseModel):
     first_name = fields.CharField(null=False, max_length=50)
-    middle_name = fields.CharField(null=True, max_length=50)
     last_name = fields.CharField(null=False, max_length=50)
     date_of_birth = fields.DatetimeField(null=False)
-    email = fields.CharField(max_length=30,null=True)
+    personal_email = fields.CharField(max_length=30,null=True)
     gender = fields.CharEnumField(GENDERS, description='Sex of user')
     date_of_enrollment = fields.DateField(null=True)
     profile_image = fields.CharField(max_length=120,null=True)
-    roles = fields.CharEnumField(ROLES, default=ROLES.GUEST)
+    home_address = fields.CharField(max_length=100)
+    role = fields.CharEnumField(ROLES, default=ROLES.GUEST)

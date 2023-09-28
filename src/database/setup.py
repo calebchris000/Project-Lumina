@@ -9,7 +9,7 @@ async def register_ab(app):
             register_tortoise(
                 app,
                 db_url=config.database_url,
-                modules={"models": ["src.core.models.base", 'src.database.model']},
+                modules={"models": ["src.core.models.base"]},
                 generate_schemas=True,
                 add_exception_handlers=True
             )
