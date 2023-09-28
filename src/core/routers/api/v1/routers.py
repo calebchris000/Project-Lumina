@@ -4,7 +4,7 @@ from src.app.auth.v1.routers.signup import signup_router
 from src.app.auth.v1.routers.login import login_router
 from src.app.school_services.credentials.v1.routers.credential import credential_router
 from src.app.school_services.student.v1.routers.student import student_router
-
+from src.app.school_services.course.v1.routers.course import course_router
 router = APIRouter()
 
 
@@ -13,3 +13,4 @@ router.include_router(student_router)
 router.include_router(signup_router)
 router.include_router(login_router)
 router.include_router(credential_router)
+router.include_router(course_router)
