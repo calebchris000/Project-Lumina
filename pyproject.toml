@@ -17,6 +17,7 @@ python-dotenv = "^1.0.0"
 flask-login = "^0.6.2"
 asyncpg = "^0.28.0"
 tortoise-orm = "^0.20.0"
+python-multipart = "^0.0.6"
 
 
 [tool.poetry.scripts]
