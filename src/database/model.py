@@ -2,7 +2,7 @@ from datetime import datetime
 from uuid import uuid4
 from tortoise import fields
 from tortoise.models import Model
-from apps.shared.generate_user_id import generate_user_id
+from src.apps.shared.generate_user_id import generate_user_id
 
 from src.database.enums import GENDERS, ROLES
 

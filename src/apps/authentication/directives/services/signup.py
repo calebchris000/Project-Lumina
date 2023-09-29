@@ -4,7 +4,7 @@ import jwt
 from src.apps.authentication.v1.schemas.signup import SignupIn
 import bcrypt
 from src.config.settings import config
-from apps.shared.password_hash import hash_password
+from src.apps.shared.password_hash import hash_password
 class SignupService(object):
     @classmethod
     async def signup_user(data_in: SignupIn):

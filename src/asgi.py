@@ -5,7 +5,6 @@ from src.database.lifespan import on_shutdown, start_db
 from src.core.routers.api.v1.routers import router as api_v1_router
 from src.config.settings import config
 
-
 def app_description():
     _app = FastAPI(
         title="Project Lumina",

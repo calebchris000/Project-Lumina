@@ -3,7 +3,6 @@ from src.apps.school_management_system.teacher_management.routers.teacher import
 from src.apps.authentication.v1.routers.signup import signup_router
 from src.apps.authentication.v1.routers.login import login_router
 from src.apps.school_management_system.student_management.routers.student import student_router
-from apps.school_management_system.course_subject.routers.course_subject import course_router
 router = APIRouter()
 
 
