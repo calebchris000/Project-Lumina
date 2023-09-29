@@ -2,12 +2,13 @@ from datetime import datetime
 from uuid import uuid4
 from tortoise import fields
 from tortoise.models import Model
+from apps.shared.generate_user_id import generate_user_id
 
 from src.database.enums import GENDERS, ROLES
 
 
 class BaseModel(Model):
-    id = fields.UUIDField(pk=True, default=uuid4())
+    id = fields.IntField(pk=True, default=generate_user_id())
     created_at = fields.DatetimeField(auto_now_add=True, default=datetime.now())
     updated_at = fields.DatetimeField(auto_now=True, default=datetime.now())
     
