@@ -7,7 +7,7 @@ from tortoise import fields
 class Student(User):
     parent_id = fields.UUIDField(null=False)
     enrolled_class = fields.ForeignKeyField('models.Course', related_name='course')
-    school_email = fields.CharField(max_length=30,null=True)
-    contact = fields.ManyToManyField('models.Contact', related_name='contacts')
+    school_email = fields.ForeignKeyField('models.SchoolContact', related_name='school_contact')
+    user_contact = fields.ManyToManyField('models.UserContact', related_name='contacts')
     attendance_records = fields.CharField(max_length=20, default=1)
-    teacher_id = fields.IntField(default=generate_user_id())
+    teacher_id = fields.ForeignKeyField('models.Teacher', related_name='teacher_id')
