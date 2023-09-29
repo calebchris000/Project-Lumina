@@ -1,9 +1,18 @@
 from typing import Optional
-from src.apps.school_management_system.student_management.schemas.student import StudentIn
+from uuid import UUID
+from src.apps.school_management_system.contact_management.schemas.school_contact import (
+    SchoolContactIn,
+)
+from src.apps.school_management_system.contact_management.schemas.user_contact import (
+    UserContactIn,
+)
+from src.apps.school_management_system.student_management.schemas.student import (
+    StudentIn,
+)
 from src.apps.school_management_system.student_management.models.student import Student
 from tortoise.expressions import Q
 from src.core.schemas.response import IBaseResponse, IResponseMessage
-from src.exceptions import errors as exc
+from src.exceptions import exception as exc
 
 
 class StudentService(object):
@@ -49,7 +58,39 @@ class StudentService(object):
             raise exc.DuplicateError(
                 "Student with these names already exist", headers=f"{data_in.first}"
             )
-        
+
         await cls.model.create(**data_in.model_dump())
-        
+
         return IResponseMessage(message=f"student created successfully")
+
+    @classmethod
+    async def update_user_contact(cls, student_id: UUID, user_contact: UserContactIn):
+        find_student = await cls.model.get_or_none(id=student_id)
+
+        if not find_student:
+            raise exc.NotFoundError("student not found")
+
+        find_student.user_contact = user_contact
+        await find_student.save()
+        return find_student
+
+    @classmethod
+    async def update_school_contact(
+        cls, student_id: UUID, school_contact: SchoolContactIn
+    ):
+        find_student = await cls.model.get_or_none(id=student_id)
+
+        if not find_student:
+            raise exc.NotFoundError("student not found")
+        find_student.user_contact = school_contact
+        await find_student.save()
+        return find_student
+    
+    @classmethod
+    async def delete_student(cls, student_id: UUID):
+        find_student = await cls.model.filter(id=student_id).delete()
+        
+        if not find_student:
+            raise exc.NotFoundError('student not found')
+        
+        return {'delete count': find_student}

@@ -2,7 +2,7 @@
 
 
 
-from database.model import BaseModel
+from src.database.model import BaseModel
 from tortoise import fields
 
 class SchoolContact(BaseModel):

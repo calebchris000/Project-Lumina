@@ -6,7 +6,7 @@ from decimal import Decimal
 from uuid import UUID
 from pydantic import BaseModel
 
-from apps.shared.generate_user_id import generate_user_id
+from src.apps.shared.generate_user_id import generate_user_id
 
 
 class TeacherIn(BaseModel):

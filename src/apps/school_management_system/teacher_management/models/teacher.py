@@ -1,11 +1,11 @@
-from apps.shared.generate_user_id import generate_user_id
+from src.apps.shared.generate_user_id import generate_user_id
 from src.apps.school_management_system.teacher_management.directives.enums.teacher import QUALIFICATION
 from src.database.model import User
 from tortoise import fields
 
 
 class Teacher(User):
-    subject_taught = fields.ForeignKeyField('models.Course', related_name='subject')
+    subject_taught = fields.UUIDField(index=True)
     qualifications = fields.CharEnumField(QUALIFICATION, default=QUALIFICATION.CLEAR_BACKGROUND_CHECK, null=False)
     user_contact = fields.ManyToManyField('models.UserContact', related_name='user_contact')
     school_contact = fields.OneToOneField('models.SchoolContact', related_name='school_contact')
