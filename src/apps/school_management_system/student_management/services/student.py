@@ -1,6 +1,6 @@
 from typing import Optional
-from src.app.school_services.student.v1.schemas.student import StudentIn
-from src.app.school_services.student.models.student import Student
+from src.apps.school_management_system.student_management.schemas.student import StudentIn
+from src.apps.school_management_system.student_management.models.student import Student
 from tortoise.expressions import Q
 from src.core.schemas.response import IBaseResponse, IResponseMessage
 from src.exceptions import errors as exc
