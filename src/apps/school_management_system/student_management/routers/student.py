@@ -1,8 +1,8 @@
 from typing import Dict, List, Tuple, AnyStr, Union
 from fastapi import APIRouter, status
-from src.apps.school_services.student.v1.schemas.student import StudentIn
+from src.apps.school_management_system.student_management.schemas.student import StudentIn
 from src.core.schemas.response import IBaseResponse
-from src.apps.school_services.student.directives.services.student import (
+from src.apps.school_management_system.student_management.services.student import (
     StudentService as service,
 )
 
