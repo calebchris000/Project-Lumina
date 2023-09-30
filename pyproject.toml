@@ -7,17 +7,27 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.11"
-tortoise = "^0.1.1"
-tortoise-orm = "^0.20.0"
 fastapi = "^0.103.1"
 pydantic = "^2.4.1"
 aerich = "^0.7.2"
 uvicorn = "^0.23.2"
+pyjwt = "^2.8.0"
+bcrypt = "^4.0.1"
+python-dotenv = "^1.0.0"
+flask-login = "^0.6.2"
+asyncpg = "^0.28.0"
+tortoise-orm = "^0.20.0"
+python-multipart = "^0.0.6"
 
 
 [tool.poetry.scripts]
 server = {callable = 'bootstrap:run_server'}
 
+
+[tool.aerich]
+tortoise_orm = "src.database.migration.TORTOISE_ORM"
+location = "./migrations"
+src_folder = "./."
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
