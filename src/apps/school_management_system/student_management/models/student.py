@@ -9,5 +9,5 @@ class Student(User):
     enrolled_class = fields.UUIDField(index=True)
     school_contact = fields.ForeignKeyField('models.SchoolContact', related_name='school contact', null=True)
     user_contact = fields.ManyToManyField('models.UserContact', related_name='user contacts', null=True)
-    attendance_records = fields.CharField(max_length=20, default=1)
+    attendance_records = fields.ForeignKeyField('models.StudentAttendance', on_delete='CASCADE', related_name='student_attendance')
     teacher_id = fields.ForeignKeyField('models.Teacher', related_name='teacher_id', null=True)
