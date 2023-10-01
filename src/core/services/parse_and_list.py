@@ -89,12 +89,9 @@ async def parse_and_return(model: Model, query: Model, load_related: bool = True
     )
     query = query.prefetch_related(*prefetch_list)
     
-    results = await query
+    result = await query
     items = {}
-    item_lists = []
-    if load_related and results:
-        print("yes")
-        result = results
+    if load_related and result:
         for field in model._meta.m2m_fields:
             if hasattr(result, field):
                 items[field] = dict(getattr(result, field))
@@ -112,9 +109,8 @@ async def parse_and_return(model: Model, query: Model, load_related: bool = True
                 items[field] = dict(getattr(result, field))
 
         items.update(dict(result))
-        item_lists.append(items)
 
     else:
-        item_lists = results
+        items = result
 
-    return {"result": item_lists, "count": len(item_lists)}
+    return {"results": items}
