@@ -24,21 +24,19 @@ class StudentService(object):
     @classmethod
     async def get_list(
         cls,
-        filter_string: Optional[str] = "",
+        filter_string: str,
         per_page: int = 10,
-        page: int = 2,
+        page: int = 1,
         sort_by: str = "ascending",
         order_by: str = "first_name",
         load_related:bool = False
     ):
         query = cls.model
         if filter_string:
-            query = await cls.model.filter(
-                Q(first_name__in=filter_string)
-                | Q(last_name__in=filter_string)
-                | Q(email__in=filter_string)
-                | Q(phone_number__in=filter_string)
-                | Q(home_address__in=filter_string)
+            query = cls.model.filter(
+                Q(first_name__icontains=filter_string)
+                | Q(last_name__icontains=filter_string)
+                | Q(home_address__icontains=filter_string)
             )
             
         return await parse_and_list(

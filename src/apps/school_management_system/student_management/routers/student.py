@@ -11,7 +11,7 @@ student_router = APIRouter(prefix="/student", tags=["Student"])
 
 
 @student_router.get("/", status_code=status.HTTP_200_OK)
-async def get_list(filter_string: Union[Dict, List, Tuple, AnyStr] = ""):
+async def get_list(filter_string: str = ""):
     return await service.get_list(filter_string=filter_string)
 
 
