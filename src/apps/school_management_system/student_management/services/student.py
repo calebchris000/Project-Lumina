@@ -37,6 +37,9 @@ class StudentService(object):
                 Q(first_name__icontains=filter_string)
                 | Q(last_name__icontains=filter_string)
                 | Q(home_address__icontains=filter_string)
+                | Q(gender_icontains=filter_string)
+                | Q(home_address__icontains=filter_string)
+                | Q(student_id__icontains=filter_string)
             )
             
         return await parse_and_list(
