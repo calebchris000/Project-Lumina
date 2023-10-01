@@ -21,7 +21,12 @@ async def parse_and_list(
         query = query.order_by("-created_at")
 
     if order_by:
-        query = query.order_by(f"{order_by}")
+        splitted = [
+            column.strip()
+            for column in order_by.split(",")
+            if column in model._meta.fields
+        ]
+        query = query.order_by(*splitted)
 
     prefetch_list = set.union(
         model._meta.m2m_fields,
@@ -35,12 +40,39 @@ async def parse_and_list(
         query = query.prefetch_related(*prefetch_list)
 
     results = await query
-    model_list = await model.all()
+    items_list = []
+
+    # print(model._meta.m2m_fields)
+    if load_related and results:
+        for result in results:
+            items = {}
+            
+            for field in model._meta.m2m_fields:
+                if hasattr(result, field):
+                    items[field] = dict(getattr(result, field))
+            for field in model._meta.o2o_fields:
+                if hasattr(result, field):
+                    items[field] = dict(getattr(result, field))
+            for field in model._meta.fk_fields:
+                if hasattr(result, field):
+                    items[field] = dict(getattr(result, field))
+            for field in model._meta.backward_fk_fields:
+                if hasattr(result, field):
+                    items[field] = dict(getattr(result, field))
+            for field in model._meta.backward_o2o_fields:
+                if getattr(result, field):
+                    items[field] = dict(getattr(result, field))
+            items.update(dict(result))
+            items_list.append(items)
+    else:
+        items_list = results
     prev_page = page - 1 if page > 1 else None
-    next_page = page + 1 if (offset + per_page) < len(model_list) else None
+    next_page = page + 1 if (offset + per_page) < len(results) else None
+    # results = [dict(result) for result in results]
+    print(offset, per_page, len(results))
     return {
-        'previous_page': prev_page,
-        'next_page': next_page,
-        'results': results,
-        'count': len(results)
+        "previous_page": prev_page,
+        "next_page": next_page,
+        "results": items_list,
+        "count": len(results),
     }
