@@ -1,3 +1,4 @@
+from src.apps.shared.serialize_object import serialize_object
 from src.apps.school_management_system.course_subject.models.subject import Subject
 from src.apps.school_management_system.student_management.schemas.student_grade import (
     StudentGradeIn,
@@ -17,16 +18,27 @@ class StudentGradeService(object):
     subject_model = Subject
 
     @classmethod
-    async def get_all_grades(cls, student_id):
+    async def get_all_grades(cls, student_id: int):
         student = await cls.student_model.filter(student_id=student_id)
 
         if not student:
             raise exc.NotFoundError("student not found")
 
-        grades_all = await cls.grade_model.filter(Q(student_id=student_id))
+        grades_all = await cls.grade_model.filter(Q(student_id=student_id)).prefetch_related('student_id')
 
-        parsed_list = [dict(grade) for grade in grades_all]
+        parsed_list = serialize_object(grades_all)
         return IBaseResponse(data=parsed_list)
+
+    @classmethod
+    async def get_grade_for_subject(cls, student_id: int, subject_id: int):
+        student = await cls.student_model.get_or_none(student_id=student_id)
+        if not student:
+            raise exc.NotFoundError("student not found")
+        subject = await cls.subject_model.get_or_none(subject_id=subject_id)
+        if not subject:
+            raise exc.NotFoundError("subject not found")
+        
+        return subject.st
 
     @classmethod
     async def create(cls, data_in: StudentGradeIn):

@@ -6,5 +6,5 @@ from src.database.model import BaseModel
 from tortoise import fields
 
 class StudentAttendance(BaseModel):
-    student = fields.ForeignKeyField('models.Student', on_delete='CASCADE', to_field='student_id')
+    student = fields.ForeignKeyField('models.Student', on_delete='CASCADE', to_field='student_id', related_name='student')
     status = fields.CharEnumField(AttendanceStatus, default=AttendanceStatus.NOT_RECORDED)

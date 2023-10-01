@@ -1,6 +1,7 @@
 from typing import Optional
 from uuid import UUID
-from src.apps.shared.generate_user_id import generate_user_id
+from src.apps.shared.serialize_object import serialize_object
+from src.apps.shared.generate_random_8 import generate_random_8
 from src.apps.school_management_system.contact_management.schemas.school_contact import (
     SchoolContactIn,
 )
@@ -23,7 +24,6 @@ class StudentService(object):
     async def get_list(cls, filter_string: Optional[str] = ""):
         students = await cls.model.all()
         if filter_string:
-            print(filter_string)
             students = await cls.model.filter(
                 Q(first_name__in=filter_string)
                 | Q(last_name__in=filter_string)
@@ -33,7 +33,8 @@ class StudentService(object):
             )
 
             return IBaseResponse(data=students)
-        return IBaseResponse(data=students)
+        serialized = serialize_object(students)
+        return IBaseResponse(data=serialized)
 
     @classmethod
     async def create_student(cls, data_in: StudentIn):
@@ -48,7 +49,7 @@ class StudentService(object):
                 "Student with these names already exist", headers={'first_name':first_name, "last_name": last_name}
             )
 
-        await cls.model.create(**data_in.model_dump(), student_id=generate_user_id())
+        await cls.model.create(**data_in.model_dump(), student_id=generate_random_8())
 
         return IResponseMessage(status_code=201, message=f"student created successfully")
 

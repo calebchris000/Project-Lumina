@@ -1,4 +1,4 @@
-from src.apps.shared.generate_user_id import generate_user_id
+from src.apps.shared.generate_random_8 import generate_random_8
 from src.apps.school_management_system.teacher_management.directives.enums.teacher import QUALIFICATION
 from src.database.model import User
 from tortoise import fields

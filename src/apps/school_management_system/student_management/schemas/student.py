@@ -5,7 +5,7 @@ import datetime
 from uuid import UUID
 from pydantic import BaseModel
 from datetime import datetime
-from src.apps.shared.generate_user_id import generate_user_id
+from src.apps.shared.generate_random_8 import generate_random_8
 
 
 class StudentIn(BaseModel):

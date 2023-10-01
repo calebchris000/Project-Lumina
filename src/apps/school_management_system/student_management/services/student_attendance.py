@@ -1,4 +1,6 @@
+import json
 from uuid import UUID
+from src.apps.shared.serialize_object import serialize_object
 from src.core.schemas.response import IBaseResponse
 from src.apps.school_management_system.student_management.models.student import Student
 from src.apps.school_management_system.student_management.models.student_attendance import (
@@ -23,7 +25,7 @@ class StudentAttendanceService(object):
         if not attendances:
             return IBaseResponse(data="0")
         
-        attendances_list = [dict(attendance) for attendance in attendances]
+        attendances_list = serialize_object(attendances)
 
         return IBaseResponse(data=attendances_list)
 
