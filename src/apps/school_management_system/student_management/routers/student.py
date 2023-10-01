@@ -32,6 +32,11 @@ async def get_list(
     )
 
 
+@student_router.get("/{student_id}", status_code=status.HTTP_200_OK)
+async def get_one(student_id: int, load_related: bool = True):
+    return await service.get_one(student_id=student_id, load_related=load_related)
+
+
 @student_router.post("/", status_code=status.HTTP_201_CREATED)
 async def create_student(data_in: StudentIn):
     return await service.create_student(data_in=data_in)

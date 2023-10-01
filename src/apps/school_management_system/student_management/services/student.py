@@ -1,6 +1,6 @@
 from typing import Optional
 from uuid import UUID
-from src.core.services.parse_and_list import parse_and_list
+from src.core.services.parse_and_list import parse_and_list, parse_and_return
 from src.apps.shared.serialize_object import serialize_object
 from src.apps.shared.generate_random_8 import generate_random_8
 from src.apps.school_management_system.contact_management.schemas.school_contact import (
@@ -53,12 +53,11 @@ class StudentService(object):
         )
 
     @classmethod
-    async def get_one(cls, student_id: int):
-        student = await cls.model.get_or_none(student_id=student_id)
-
-        if not student:
-            raise exc.NotFoundError("student not found")
-
+    async def get_one(cls, student_id: int, load_related: bool = True):
+        query = cls.model
+        query = query.filter(student_id=student_id).first()
+        
+        return await parse_and_return(query=query, model=cls.model, load_related= load_related)
     @classmethod
     async def create_student(cls, data_in: StudentIn):
         first_name = data_in.first_name
