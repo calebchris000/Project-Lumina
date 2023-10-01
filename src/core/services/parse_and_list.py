@@ -46,7 +46,7 @@ async def parse_and_list(
     if load_related and results:
         for result in results:
             items = {}
-            
+
             for field in model._meta.m2m_fields:
                 if hasattr(result, field):
                     items[field] = dict(getattr(result, field))
@@ -76,3 +76,45 @@ async def parse_and_list(
         "results": items_list,
         "count": len(results),
     }
+
+
+async def parse_and_return(model: Model, query: Model, load_related: bool = True):
+    
+    prefetch_list = set.union(
+        model._meta.m2m_fields,
+        model._meta.o2o_fields,
+        model._meta.fk_fields,
+        model._meta.backward_fk_fields,
+        model._meta.backward_o2o_fields,
+    )
+    query = query.prefetch_related(*prefetch_list)
+    
+    results = await query
+    items = {}
+    item_lists = []
+    if load_related and results:
+        print("yes")
+        result = results
+        for field in model._meta.m2m_fields:
+            if hasattr(result, field):
+                items[field] = dict(getattr(result, field))
+        for field in model._meta.o2o_fields:
+            if hasattr(result, field):
+                items[field] = dict(getattr(result, field))
+        for field in model._meta.fk_fields:
+            if hasattr(result, field):
+                items[field] = dict(getattr(result, field))
+        for field in model._meta.backward_fk_fields:
+            if hasattr(result, field):
+                items[field] = dict(getattr(result, field))
+        for field in model._meta.backward_o2o_fields:
+            if hasattr(result, field):
+                items[field] = dict(getattr(result, field))
+
+        items.update(dict(result))
+        item_lists.append(items)
+
+    else:
+        item_lists = results
+
+    return {"result": item_lists, "count": len(item_lists)}
