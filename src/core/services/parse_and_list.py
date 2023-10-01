@@ -68,8 +68,6 @@ async def parse_and_list(
         items_list = results
     prev_page = page - 1 if page > 1 else None
     next_page = page + 1 if (offset + per_page) < len(results) else None
-    # results = [dict(result) for result in results]
-    print(offset, per_page, len(results))
     return {
         "previous_page": prev_page,
         "next_page": next_page,
@@ -103,10 +101,10 @@ async def parse_and_return(model: Model, query: Model, load_related: bool = True
                 items[field] = dict(getattr(result, field))
         for field in model._meta.backward_fk_fields:
             if hasattr(result, field):
-                items[field] = dict(getattr(result, field))
+                items[field] = list(getattr(result, field))
         for field in model._meta.backward_o2o_fields:
             if hasattr(result, field):
-                items[field] = dict(getattr(result, field))
+                items[field] = {} if not getattr(result, field) else dict(getattr(result, field))
 
         items.update(dict(result))
 

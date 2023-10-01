@@ -1,5 +1,7 @@
-from typing import Optional
+from typing import Optional, Union
 from uuid import UUID
+from tortoise.models import Model
+from src.apps.school_management_system.contact_management.models.user_contact import UserContact
 from src.core.services.parse_and_list import parse_and_list, parse_and_return
 from src.apps.shared.serialize_object import serialize_object
 from src.apps.shared.generate_random_8 import generate_random_8
@@ -14,12 +16,13 @@ from src.apps.school_management_system.student_management.schemas.student import
 )
 from src.apps.school_management_system.student_management.models.student import Student
 from tortoise.expressions import Q
-from src.core.schemas.response import IBaseResponse, IResponseMessage
+from src.core.schemas.response import IBaseResponse, IResponseMessage, PaginatedResponse
 from src.exceptions import exception as exc
 
 
 class StudentService(object):
     model = Student
+    user_contact = UserContact
 
     @classmethod
     async def get_list(
@@ -30,7 +33,7 @@ class StudentService(object):
         sort_by: str = "ascending",
         order_by: str = "first_name",
         load_related:bool = True
-    ):
+    ) -> PaginatedResponse:
         query = cls.model
         if filter_string:
             query = cls.model.filter(
@@ -53,13 +56,13 @@ class StudentService(object):
         )
 
     @classmethod
-    async def get_one(cls, student_id: int, load_related: bool = True):
+    async def get_one(cls, student_id: int, load_related: bool = True) -> Union[dict, Model]:
         query = cls.model
         query = query.filter(student_id=student_id)
         
         return await parse_and_return(query=query, model=cls.model, load_related= load_related)
     @classmethod
-    async def create_student(cls, data_in: StudentIn):
+    async def create_student(cls, data_in: StudentIn) -> Student:
         first_name = data_in.first_name
         last_name = data_in.last_name
         check_student = await cls.model.get_or_none(
@@ -72,14 +75,24 @@ class StudentService(object):
                 headers={"first_name": first_name, "last_name": last_name},
             )
 
-        await cls.model.create(**data_in.model_dump(), student_id=generate_random_8())
+        new_student = await cls.model.create(**data_in.model_dump(), student_id=generate_random_8())
 
-        return IResponseMessage(
-            status_code=201, message=f"student created successfully"
-        )
+        return new_student
+
 
     @classmethod
-    async def update_user_contact(cls, student_id: UUID, user_contact: UserContactIn):
+    async def create_user_contact(cls, student_id: int, data_in: UserContactIn):
+        get_student = await cls.model.get_or_none(student_id=student_id).prefetch_related('usercontact')
+        
+        if not get_student:
+            raise exc.NotFoundError('student not found')
+        
+        new_contact = await cls.user_contact.create(**data_in.model_dump(), student=get_student)
+        contacts = await get_student.usercontact.all()
+        # await get_student.save()
+        return contacts
+    @classmethod
+    async def update_user_contact(cls, student_id: UUID, user_contact: UserContactIn) -> Student:
         find_student = await cls.model.get_or_none(id=student_id)
 
         if not find_student:
@@ -92,7 +105,7 @@ class StudentService(object):
     @classmethod
     async def update_school_contact(
         cls, student_id: UUID, school_contact: SchoolContactIn
-    ):
+    ) -> Student:
         find_student = await cls.model.get_or_none(id=student_id)
 
         if not find_student:
