@@ -12,7 +12,7 @@ class IResponseMessage(BaseModel):
 
 class IBaseResponse(BaseModel):
     status_code: int = 200
-    data: Union[Dict, List, Tuple, AnyStr] = []
+    data: Union[Dict, List, Tuple, AnyStr, int] = []
     headers: Union[Dict, List] = []
 
 class PaginatedResponse(BaseModel):
