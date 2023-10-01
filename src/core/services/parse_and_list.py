@@ -79,7 +79,7 @@ async def parse_and_list(
 
 
 async def parse_and_return(model: Model, query: Model, load_related: bool = True):
-    
+    query = query.first()
     prefetch_list = set.union(
         model._meta.m2m_fields,
         model._meta.o2o_fields,

@@ -15,3 +15,9 @@ class IBaseResponse(BaseModel):
     data: Union[Dict, List, Tuple, AnyStr] = []
     headers: Union[Dict, List] = []
 
+class PaginatedResponse(BaseModel):
+    previous_page: int | None
+    next_page: int | None
+    results: list
+    count: int
+    

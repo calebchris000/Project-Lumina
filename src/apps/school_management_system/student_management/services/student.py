@@ -55,7 +55,7 @@ class StudentService(object):
     @classmethod
     async def get_one(cls, student_id: int, load_related: bool = True):
         query = cls.model
-        query = query.filter(student_id=student_id).first()
+        query = query.filter(student_id=student_id)
         
         return await parse_and_return(query=query, model=cls.model, load_related= load_related)
     @classmethod
