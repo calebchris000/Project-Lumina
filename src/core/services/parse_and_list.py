@@ -58,7 +58,7 @@ async def parse_and_list(
                     items[field] = dict(getattr(result, field))
             for field in model._meta.backward_fk_fields:
                 if hasattr(result, field):
-                    items[field] = dict(getattr(result, field))
+                    items[field] = list(getattr(result, field))
             for field in model._meta.backward_o2o_fields:
                 if getattr(result, field):
                     items[field] = dict(getattr(result, field))
