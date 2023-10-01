@@ -29,7 +29,7 @@ class StudentService(object):
         page: int = 1,
         sort_by: str = "ascending",
         order_by: str = "first_name",
-        load_related:bool = False
+        load_related:bool = True
     ):
         query = cls.model
         if filter_string:

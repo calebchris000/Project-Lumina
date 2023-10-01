@@ -20,7 +20,7 @@ async def get_list(
     page: int = 1,
     sort_by: SortBy = SortBy.ASCENDING,
     order_by: str = "first_name",
-    load_related: bool = "true",
+    load_related: bool = True,
 ):
     return await service.get_list(
         filter_string=filter_string,
