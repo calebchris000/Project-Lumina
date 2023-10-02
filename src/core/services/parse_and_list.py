@@ -67,7 +67,7 @@ async def parse_and_list(
     else:
         items_list = results
     prev_page = page - 1 if page > 1 else None
-    next_page = page + 1 if (offset + per_page) < len(results) else None
+    next_page = page + 1 if per_page == len(results) else None
     return {
         "previous_page": prev_page,
         "next_page": next_page,
