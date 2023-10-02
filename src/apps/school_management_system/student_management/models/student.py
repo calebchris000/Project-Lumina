@@ -1,13 +1,10 @@
 
 
-from src.apps.shared.generate_user_id import generate_user_id
+from src.apps.shared.generate_random_8 import generate_random_8
 from src.database.model import User
 from tortoise import fields
+from src.apps.shared.generate_random_8 import generate_random_8
 
 class Student(User):
-    parent_id = fields.UUIDField(null=False)
     enrolled_class = fields.UUIDField(index=True)
-    school_contact = fields.ForeignKeyField('models.SchoolContact', related_name='school contact', null=True)
-    user_contact = fields.ManyToManyField('models.UserContact', related_name='user contacts', null=True)
-    attendance_records = fields.ForeignKeyField('models.StudentAttendance', on_delete='CASCADE', related_name='student_attendance')
-    teacher_id = fields.ForeignKeyField('models.Teacher', related_name='teacher_id', null=True)
+    student_id = fields.IntField(unique=True)
