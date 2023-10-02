@@ -10,3 +10,4 @@ class UserContact(BaseModel):
     office = fields.IntField(null=True)
     email_address = fields.CharField(max_length=30, null=True)
     student = fields.ForeignKeyField('models.Student', to_field='student_id', related_name='usercontact')
+    teacher = fields.ForeignKeyField('models.Teacher', to_field='teacher_id', related_name='teacher')
