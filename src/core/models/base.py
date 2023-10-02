@@ -7,3 +7,4 @@ from src.apps.school_management_system.student_management.models.student_grade i
 from src.apps.school_management_system.course_subject.models.course import Course
 from src.apps.school_management_system.course_subject.models.subject import Subject
 from src.apps.school_management_system.teacher_management.models.teacher_qualification import TeacherQualification
+from src.apps.school_management_system.teacher_management.models.teacher_attendance import TeacherAttendance
