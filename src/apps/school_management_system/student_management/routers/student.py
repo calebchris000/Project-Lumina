@@ -17,7 +17,7 @@ student_router = APIRouter(prefix="/student", tags=["Student"])
 async def get_list(
     filter_string: str = "",
     per_page: int = 10,
-    page: int = 1,
+    page: int = 2,
     sort_by: SortBy = SortBy.ASCENDING,
     order_by: str = "first_name",
     load_related: bool = True,

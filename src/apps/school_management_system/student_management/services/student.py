@@ -97,11 +97,8 @@ class StudentService(object):
 
         if not find_student:
             raise exc.NotFoundError("student not found")
-
-        find_student.user_contact = user_contact
-        await find_student.save()
-        return find_student
-
+        
+        contact = await cls.user_contact.get_or_none()
     @classmethod
     async def update_school_contact(
         cls, student_id: UUID, school_contact: SchoolContactIn
