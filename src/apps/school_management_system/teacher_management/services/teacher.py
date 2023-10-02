@@ -1,3 +1,6 @@
+from uuid import UUID
+from src.apps.school_management_system.course_subject.models.course import Course
+from src.apps.school_management_system.course_subject.models.subject import Subject
 from src.apps.shared.generate_random_8 import generate_random_8
 from src.apps.school_management_system.teacher_management.schemas.teacher import (
     TeacherIn,
@@ -11,7 +14,8 @@ from src.exceptions import exception as exc
 
 class TeacherService(object):
     model = Teacher
-
+    subject_model = Subject
+    course_model = Course
     @classmethod
     async def get_all(
         cls,
@@ -82,3 +86,25 @@ class TeacherService(object):
             raise exc.NotFoundError('teacher does not exist')
         
         return {'delete count': teacher}
+    
+    @classmethod
+    async def add_subject(cls, teacher_id: int, subject_id: UUID, course_id: UUID):
+        teacher = await cls.model.filter(teacher_id=teacher_id).first()
+        
+        if not teacher:
+            raise exc.NotFoundError('teacher does not exist')
+        
+        
+        subject = await teacher.subjects.all()
+        
+        if subject:
+            raise exc.DuplicateError(f'{subject.name} already assigned to {teacher.first_name} {teacher.last_name}')
+        
+        get_subject = await cls.subject_model.filter(id=subject_id).first()
+        if not get_subject:
+            raise exc.NotFoundError('subject not found')
+        get_subject.teacher = teacher
+        await get_subject.save()
+        return await teacher.subjects
+        # await add_subject.save()
+        # return teacher.subjects
