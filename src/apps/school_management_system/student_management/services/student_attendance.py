@@ -15,19 +15,14 @@ class StudentAttendanceService(object):
 
     @classmethod
     async def get_counts(cls, student_id: int):
-        get_student = await cls.student_model.get_or_none(student_id=student_id)
+        get_student = await cls.student_model.get_or_none(student_id=student_id).prefetch_related('studentattendance')
 
         if not get_student:
             raise exc.NotFoundError("student not found")
 
-        attendances = await cls.attendance_model.filter(student_id=student_id)
-
-        if not attendances:
-            return IBaseResponse(data="0")
+        attendances = await get_student.studentattendance.all()
         
-        attendances_list = serialize_object(attendances)
-
-        return IBaseResponse(data=attendances_list)
+        return IBaseResponse(data=len(attendances))
 
     @classmethod
     async def add_attendance(cls, student_id: int):
