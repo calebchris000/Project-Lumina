@@ -8,3 +8,4 @@ from src.apps.school_management_system.course_subject.models.course import Cours
 from src.apps.school_management_system.course_subject.models.subject import Subject
 from src.apps.school_management_system.teacher_management.models.teacher_qualification import TeacherQualification
 from src.apps.school_management_system.teacher_management.models.teacher_attendance import TeacherAttendance
+from src.apps.school_management_system.teacher_management.models.teacher_schedule import TeacherSchedule
