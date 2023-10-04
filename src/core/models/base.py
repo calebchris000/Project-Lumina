@@ -9,3 +9,4 @@ from src.apps.school_management_system.course_subject.models.subject import Subj
 from src.apps.school_management_system.teacher_management.models.teacher_qualification import TeacherQualification
 from src.apps.school_management_system.teacher_management.models.teacher_attendance import TeacherAttendance
 from src.apps.school_management_system.teacher_management.models.teacher_schedule import TeacherSchedule
+from src.apps.school_management_system.class_management.models.school_class import SchoolClass

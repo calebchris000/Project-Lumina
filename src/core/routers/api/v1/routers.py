@@ -11,6 +11,7 @@ from src.apps.school_management_system.student_management.routers.student_attend
 from src.apps.school_management_system.student_management.routers.student_user_contact import student_user_contact
 from src.apps.school_management_system.course_subject.routers.course import course_router
 from src.apps.school_management_system.course_subject.routers.subject import subject_router
+from src.apps.school_management_system.class_management.routers.school_class import class_router
 
 router = APIRouter()
 
@@ -22,6 +23,7 @@ router.include_router(teacher_attendance_router)
 router.include_router(teacher_schedule_router)
 router.include_router(student_grade_router)
 router.include_router(student_user_contact)
+router.include_router(class_router)
 router.include_router(course_router)
 router.include_router(subject_router)
 router.include_router(signup_router)
