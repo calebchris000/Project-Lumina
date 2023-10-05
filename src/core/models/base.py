@@ -10,3 +10,4 @@ from src.apps.school_management_system.teacher_management.models.teacher_qualifi
 from src.apps.school_management_system.teacher_management.models.teacher_attendance import TeacherAttendance
 from src.apps.school_management_system.teacher_management.models.teacher_schedule import TeacherSchedule
 from src.apps.school_management_system.class_management.models.school_class import SchoolClass
+from src.apps.school_management_system.attendance_tracking.models.school_attendance import SchoolAttendance
