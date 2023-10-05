@@ -45,9 +45,9 @@ async def update_teacher(teacher_id: int, data_in: TeacherIn):
     "/{teacher_id}/course/{course_id}/subjects/{subject_id}",
     status_code=status.HTTP_200_OK,
 )
-async def add_subject(teacher_id: int, course_id: UUID, subject_id: UUID):
+async def add_subject(teacher_id: int,subject_id: UUID):
     return await service.add_subject(
-        teacher_id=teacher_id, course_id=course_id, subject_id=subject_id
+        teacher_id=teacher_id, subject_id=subject_id
     )
 
 

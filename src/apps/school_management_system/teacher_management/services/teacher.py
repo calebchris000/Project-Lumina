@@ -88,14 +88,14 @@ class TeacherService(object):
         return {'delete count': teacher}
     
     @classmethod
-    async def add_subject(cls, teacher_id: int, subject_id: UUID, course_id: UUID):
+    async def add_subject(cls, teacher_id: int, subject_id: UUID):
         teacher = await cls.model.filter(teacher_id=teacher_id).first()
         
         if not teacher:
             raise exc.NotFoundError('teacher does not exist')
         
         
-        subject = await teacher.subjects.all()
+        subject = await teacher.subjects.filter(id=subject_id).first()
         
         if subject:
             raise exc.DuplicateError(f'{subject.name} already assigned to {teacher.first_name} {teacher.last_name}')
