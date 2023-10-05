@@ -1,6 +1,6 @@
 from tortoise.models import Model
 from src.core.enums.sort import SortBy
-
+from typing import Union
 
 async def parse_and_list(
     model: Model,
@@ -55,7 +55,7 @@ async def parse_and_list(
                     items[field] = dict(getattr(result, field))
             for field in model._meta.fk_fields:
                 if hasattr(result, field):
-                    items[field] = dict(getattr(result, field))
+                    items[field] = (getattr(result, field))
             for field in model._meta.backward_fk_fields:
                 if hasattr(result, field):
                     items[field] = list(getattr(result, field))
