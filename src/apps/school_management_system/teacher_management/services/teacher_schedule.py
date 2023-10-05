@@ -81,3 +81,12 @@ class TeacherScheduleService(object):
         schedule.update_from_dict(data_in.model_dump(exclude_none=True, exclude_unset=True))
         await schedule.save()
         return schedule
+    
+    @classmethod
+    async def delete(cls, schedule_id: UUID):
+        schedule = await cls.model.filter(id=schedule_id).delete()
+        
+        if not schedule:
+            raise exc.NotFoundError('schedule not found')
+        
+        return {'delete count': schedule}

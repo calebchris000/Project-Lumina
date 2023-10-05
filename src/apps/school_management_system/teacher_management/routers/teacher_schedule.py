@@ -46,3 +46,6 @@ async def update_schedule_time(
         schedule_id=schedule_id, teacher_id=teacher_id, data_in=data_in
     )
     
+@teacher_schedule_router.delete('/{schedule_id}', status_code=status.HTTP_200_OK)
+async def delete(schedule_id: UUID):
+    return await service.delete(schedule_id=schedule_id)
