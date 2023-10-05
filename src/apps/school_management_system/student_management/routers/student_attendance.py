@@ -12,6 +12,6 @@ async def get_attendance_counts(student_id: int):
     return await service.get_counts(student_id=student_id)
 
 
-@student_attendance_router.post('/{student_id}', status_code=status.HTTP_201_CREATED)
-async def add_attendance(student_id: int):
-    return await service.add_attendance(student_id=student_id)
+@student_attendance_router.post('/{student_id}/class/{class_id}', status_code=status.HTTP_201_CREATED)
+async def add_attendance(student_id: int, class_id: UUID, present: bool = True, reason: str = ""):
+    return await service.add_attendance(student_id=student_id, class_id=class_id, present=present, reason=reason)
