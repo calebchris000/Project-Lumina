@@ -2,7 +2,7 @@ from fastapi import APIRouter
 from src.apps.school_management_system.teacher_management.routers.teacher import teacher_router
 from src.apps.school_management_system.teacher_management.routers.teacher_attendance import teacher_attendance_router
 from src.apps.school_management_system.teacher_management.routers.teacher_qualification import teacher_qualification_router
-from src.apps.school_management_system.teacher_management.routers.teacher_schedule import teacher_schedule_router
+# from src.apps.school_management_system.schedule_management.routers.schedule import subject_schedule_router
 from src.apps.authentication.v1.routers.signup import signup_router
 from src.apps.authentication.v1.routers.login import login_router
 from src.apps.school_management_system.student_management.routers.student import student_router
@@ -20,7 +20,7 @@ router.include_router(student_router)
 router.include_router(student_attendance_router)
 router.include_router(teacher_qualification_router)
 router.include_router(teacher_attendance_router)
-router.include_router(teacher_schedule_router)
+# router.include_router(subject_schedule_router)
 router.include_router(student_grade_router)
 router.include_router(student_user_contact)
 router.include_router(class_router)

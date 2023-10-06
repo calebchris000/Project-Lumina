@@ -6,5 +6,10 @@ from tortoise import fields
 class Subject(BaseModel):
     name = fields.CharField(max_length=30, unique=True)
     course = fields.ForeignKeyField('models.Course', related_name='course')
-    teacher = fields.ForeignKeyField('models.Teacher', to_fields='teacher_id', null=True, related_name='subjects')
+    teacher = fields.ForeignKeyField('models.Teacher', related_name='teacher_subjects', null=True)
+    from_date = fields.DatetimeField()
+    to_date = fields.DatetimeField()
     description = fields.TextField()
+    
+    class Meta:
+        table = 'subjects'

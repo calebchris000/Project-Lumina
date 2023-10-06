@@ -4,6 +4,5 @@ from tortoise import fields
 from src.apps.shared.generate_random_8 import generate_random_8
 
 class Student(User):
-    enrolled_class = fields.UUIDField(index=True)
-    student_id = fields.IntField(unique=True)
-    school_class = fields.ForeignKeyField('models.SchoolClass', null=True, related_name='school_classes')
+    enrolled_class_ids = fields.JSONField()
+    student_id = fields.CharField(unique=True, max_length=10)

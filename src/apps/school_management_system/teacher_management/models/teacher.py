@@ -5,6 +5,5 @@ from tortoise import fields
 
 
 class Teacher(User):
-    teacher_id = fields.IntField(unique=True)
+    teacher_id = fields.CharField(unique=True, max_length=10)
     years_of_experience = fields.DecimalField(max_digits=3, decimal_places=1)
-    school_class = fields.ForeignKeyField('models.SchoolClass', null=True, related_name='teacher_class')

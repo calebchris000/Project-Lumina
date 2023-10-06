@@ -16,8 +16,6 @@ class TeacherIn(BaseModel):
     date_of_enrollment: date = '2023-12-12'
     profile_image: str = 'http'
     home_address: str = '121, Keystone Place'
-    subject_taught: str = 'Chemistry'
-    qualifications: str = "bachelor's degree in education"
     role: str = 'guest'
     years_of_experience: Decimal = '12.5'
 
