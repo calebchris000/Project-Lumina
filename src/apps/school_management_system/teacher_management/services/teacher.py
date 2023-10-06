@@ -45,7 +45,7 @@ class TeacherService(object):
         )
 
     @classmethod
-    async def get_one(cls, teacher_id: int, load_related: bool = True):
+    async def get_one(cls, teacher_id: str, load_related: bool = True):
         query = cls.model.filter(teacher_id=teacher_id)
 
         return await parse_and_return(
@@ -69,7 +69,7 @@ class TeacherService(object):
         return new_teacher
 
     @classmethod
-    async def update_teacher(cls, teacher_id: int, data_in: TeacherIn):
+    async def update_teacher(cls, teacher_id: str, data_in: TeacherIn):
         teacher = await cls.model.filter(teacher_id=teacher_id).first()
 
         if not teacher:
@@ -81,7 +81,7 @@ class TeacherService(object):
         return teacher
 
     @classmethod
-    async def delete_teacher(cls, teacher_id: int):
+    async def delete_teacher(cls, teacher_id: str):
         teacher = await cls.model.filter(teacher_id=teacher_id).delete()
         if not teacher:
             raise exc.NotFoundError("teacher does not exist")
@@ -89,7 +89,7 @@ class TeacherService(object):
         return {"delete count": teacher}
 
     @classmethod
-    async def add_subject(cls, teacher_id: int, subject_id: UUID):
+    async def add_subject(cls, teacher_id: str, subject_id: UUID):
         teacher = await cls.model.filter(teacher_id=teacher_id).first()
 
         if not teacher:

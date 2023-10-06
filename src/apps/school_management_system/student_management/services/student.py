@@ -56,7 +56,7 @@ class StudentService(object):
         )
 
     @classmethod
-    async def get_one(cls, student_id: int, load_related: bool = True) -> Union[dict, Model]:
+    async def get_one(cls, student_id: str, load_related: bool = True) -> Union[dict, Model]:
         query = cls.model
         query = query.filter(student_id=student_id)
         
@@ -75,13 +75,13 @@ class StudentService(object):
                 headers={"first_name": first_name, "last_name": last_name},
             )
 
-        new_student = await cls.model.create(**data_in.model_dump(), student_id=generate_random_8())
+        new_student = await cls.model.create(**data_in.model_dump(), student_id=generate_random_8(prefix='ST'))
 
         return new_student
 
 
     @classmethod
-    async def create_user_contact(cls, student_id: int, data_in: UserContactIn):
+    async def create_user_contact(cls, student_id: str, data_in: UserContactIn):
         get_student = await cls.model.get_or_none(student_id=student_id).prefetch_related('usercontact')
         
         if not get_student:
@@ -112,8 +112,8 @@ class StudentService(object):
         return find_student
 
     @classmethod
-    async def delete_student(cls, student_id: UUID):
-        find_student = await cls.model.filter(id=student_id).delete()
+    async def delete_student(cls, student_id: str):
+        find_student = await cls.model.filter(student_id=student_id).delete()
 
         if not find_student:
             raise exc.NotFoundError("student not found")

@@ -37,7 +37,7 @@ async def create_teacher(data_in: TeacherIn):
 
 
 @teacher_router.put("/{teacher_id}", status_code=status.HTTP_200_OK)
-async def update_teacher(teacher_id: int, data_in: TeacherIn):
+async def update_teacher(teacher_id: str, data_in: TeacherIn):
     return await service.update_teacher(teacher_id=teacher_id, data_in=data_in)
 
 
@@ -45,12 +45,12 @@ async def update_teacher(teacher_id: int, data_in: TeacherIn):
     "/{teacher_id}/course/{course_id}/subjects/{subject_id}",
     status_code=status.HTTP_200_OK,
 )
-async def add_subject(teacher_id: int,subject_id: UUID):
+async def add_subject(teacher_id: str,subject_id: UUID):
     return await service.add_subject(
         teacher_id=teacher_id, subject_id=subject_id
     )
 
 
-@teacher_router.delete("/{teacher_id}", status_code=status.HTTP_204_NO_CONTENT)
-async def delete_teacher(teacher_id: int):
+@teacher_router.delete("/{teacher_id}", status_code=status.HTTP_200_OK)
+async def delete_teacher(teacher_id: str):
     return await service.delete_teacher(teacher_id=teacher_id)

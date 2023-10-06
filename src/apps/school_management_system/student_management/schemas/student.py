@@ -17,7 +17,8 @@ class StudentIn(BaseModel):
     gender: str = 'male'
     date_of_enrollment: datetime
     profile_image: str
-    enrolled_class: UUID = "318d71ee-7d5d-48c4-b341-b3246c78260e"
+    grade:str = '5'
+    # enrolled_class: UUID = "318d71ee-7d5d-48c4-b341-b3246c78260e"
     home_address: str
     role: str ='guest'
 
