@@ -1,8 +1,6 @@
 import json
 from uuid import UUID
-from src.apps.school_management_system.class_management.models.school_class import (
-    SchoolClass,
-)
+from src.apps.school_management_system.course_subject.models.subject import Subject
 from src.apps.shared.serialize_object import serialize_object
 from src.core.schemas.response import IBaseResponse
 from src.apps.school_management_system.student_management.models.student import Student
@@ -15,35 +13,39 @@ from src.exceptions import exception as exc
 class StudentAttendanceService(object):
     attendance_model = StudentAttendance
     student_model = Student
-    class_model = SchoolClass
+    subject_model = Subject
 
     @classmethod
-    async def get_counts(cls, student_id: int):
+    async def get_counts(cls, student_id: str):
         get_student = await cls.student_model.get_or_none(
             student_id=student_id
-        ).prefetch_related("studentattendance")
+        ).prefetch_related("student_classes")
 
         if not get_student:
             raise exc.NotFoundError("student not found")
 
-        attendances = await get_student.studentattendance.all()
+        attendances = await get_student.student_classes.all()
 
         return IBaseResponse(data=len(attendances))
 
     @classmethod
     async def add_attendance(
-        cls, student_id: int, class_id: UUID, present: bool = True, reason: str = ""
+        cls, student_id: str, subject_id: UUID, present: bool = True, reason: str = ""
     ):
         student = await cls.student_model.get_or_none(student_id=student_id)
 
         if not student:
             raise exc.NotFoundError("student not found")
 
-        school_class = await cls.class_model.get_or_none(id=class_id)
-        if not school_class:
-            raise exc.NotFoundError("class not found")
+        subject = await cls.subject_model.get_or_none(id=subject_id)
+        if not subject:
+            raise exc.NotFoundError("subject not found")
+        print(f"student {student_id} subject {subject_id}")
         student = await cls.attendance_model.create(
-            student_id=student_id, present=present, reason=reason, school_class_id=school_class.id
+            student_id=student_id,
+            present=present,
+            reason=reason,
+            subject_id=subject_id,
         )
 
         return student

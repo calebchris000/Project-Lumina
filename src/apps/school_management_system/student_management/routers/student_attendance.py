@@ -8,10 +8,10 @@ student_attendance_router = APIRouter(prefix='/student-attendance', tags=['Stude
 
 
 @student_attendance_router.get('/{student_id}', status_code=status.HTTP_200_OK)
-async def get_attendance_counts(student_id: int):
+async def get_attendance_counts(student_id: str):
     return await service.get_counts(student_id=student_id)
 
 
-@student_attendance_router.post('/{student_id}/class/{class_id}', status_code=status.HTTP_201_CREATED)
-async def add_attendance(student_id: int, class_id: UUID, present: bool = True, reason: str = ""):
-    return await service.add_attendance(student_id=student_id, class_id=class_id, present=present, reason=reason)
+@student_attendance_router.post('/{student_id}/subjects/{subject_id}', status_code=status.HTTP_201_CREATED)
+async def add_attendance(student_id: str, subject_id: UUID, present: bool = True, reason: str = ""):
+    return await service.add_attendance(student_id=student_id, subject_id=subject_id, present=present, reason=reason)
