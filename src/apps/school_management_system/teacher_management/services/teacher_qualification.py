@@ -19,7 +19,7 @@ class TeacherQualificationService(object):
     @classmethod
     async def get_teacher_qualifications(
         cls,
-        teacher_id: int,
+        teacher_id: str,
         filter_list: str = "",
         per_page: int = 10,
         page: int = 1,
@@ -47,7 +47,7 @@ class TeacherQualificationService(object):
         )
 
     @classmethod
-    async def add_qualification(cls, teacher_id: int, data_in: TeacherQualificationIn):
+    async def add_qualification(cls, teacher_id: str, data_in: TeacherQualificationIn):
         teacher = await cls.teacher_model.filter(teacher_id=teacher_id).first()
 
         if not teacher:
@@ -61,7 +61,7 @@ class TeacherQualificationService(object):
 
     @classmethod
     async def update_qualification(
-        cls, teacher_id: int, data_in: TeacherQualificationIn
+        cls, teacher_id: str, data_in: TeacherQualificationIn
     ):
         teacher = await cls.teacher_model.filter(teacher_id=teacher_id).first()
 

@@ -14,7 +14,7 @@ teacher_qualification_router = APIRouter(
 
 @teacher_qualification_router.get("/{teacher_id}", status_code=status.HTTP_200_OK)
 async def get_qualifications(
-    teacher_id: int,
+    teacher_id: str,
     filter_list: str = "",
     per_page: int = 10,
     page: int = 1,
@@ -34,12 +34,12 @@ async def get_qualifications(
     
 
 @teacher_qualification_router.post('/{teacher_id}', status_code=status.HTTP_201_CREATED)
-async def add_qualification(teacher_id: int, data_in: TeacherQualificationIn):
+async def add_qualification(teacher_id: str, data_in: TeacherQualificationIn):
     return await service.add_qualification(teacher_id=teacher_id, data_in=data_in)
 
 
 @teacher_qualification_router.put('/{teacher_id}', status_code=status.HTTP_200_OK)
-async def update_qualification(teacher_id: int, data_in: TeacherQualificationIn):
+async def update_qualification(teacher_id: str, data_in: TeacherQualificationIn):
     return await service.update_qualification(teacher_id=teacher_id, data_in=data_in)
 
 @teacher_qualification_router.delete('/{qualification_id}', status_code=status.HTTP_200_OK)
