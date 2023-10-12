@@ -2,5 +2,5 @@ from pydantic import BaseModel
 
 
 class CourseIn(BaseModel):
-    name: str
-    description: str
+    name: str = 'Mathematics'
+    description: str = 'The best subject'

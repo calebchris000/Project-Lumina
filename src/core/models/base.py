@@ -6,3 +6,7 @@ from src.apps.school_management_system.student_management.models.student_attenda
 from src.apps.school_management_system.student_management.models.student_grade import StudentGrade
 from src.apps.school_management_system.course_subject.models.course import Course
 from src.apps.school_management_system.course_subject.models.subject import Subject
+from src.apps.school_management_system.teacher_management.models.teacher_qualification import TeacherQualification
+from src.apps.school_management_system.teacher_management.models.teacher_attendance import TeacherAttendance
+from src.apps.school_management_system.class_management.models.school_class import SchoolClass
+from src.apps.school_management_system.attendance_tracking.models.school_attendance import SchoolAttendance

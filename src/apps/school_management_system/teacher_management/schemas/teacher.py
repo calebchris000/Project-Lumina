@@ -3,28 +3,21 @@
 
 from datetime import date
 from decimal import Decimal
+from typing import Union
 from uuid import UUID
 from pydantic import BaseModel
 
-from src.apps.shared.generate_random_8 import generate_random_8
-
 
 class TeacherIn(BaseModel):
-    first_name: str
-    last_name: str
-    date_of_birth: str
-    email: str
-    gender: str
-    contact: str
-    date_of_enrolment: date
-    profile_image: str
-    enrolled_class: str
-    home_address: str
-    subject_taught: UUID
-    qualifications: str
-    role: str
-    years_of_experience: Decimal
-    teacher_id: int
+    first_name: str = 'Daniel'
+    last_name: str = 'Walmart'
+    date_of_birth: date = '2005-12-28'
+    gender: str = 'male'
+    date_of_enrollment: date = '2023-12-12'
+    profile_image: str = 'http'
+    home_address: str = '121, Keystone Place'
+    role: str = 'guest'
+    years_of_experience: Decimal = '12.5'
 
 class TeacherOut(BaseModel):
     teacher_id: UUID

@@ -1,32 +1,51 @@
+from src.core.services.parse_and_list import parse_and_list
+from src.core.enums.sort import SortBy
 from src.apps.shared.serialize_object import serialize_object
 from src.apps.shared.generate_random_8 import generate_random_8
 from src.apps.school_management_system.course_subject.schemas.course import CourseIn
 from src.apps.school_management_system.course_subject.models.course import Course
 from src.core.schemas.response import IBaseResponse, IResponseMessage
 from src.exceptions import exception as exc
+from tortoise.expressions import Q
 
 
 class CourseService(object):
     model = Course
 
     @classmethod
-    async def get_list(cls):
-        courses = await cls.model.all()
+    async def get_list(
+        cls,
+        filter_list: str = "",
+        per_page: int = 10,
+        page: int = 1,
+        sort_by: SortBy = "ascending",
+        order_by: str = "first_name",
+        load_related: bool = True,
+    ):
+        query = cls.model
 
-        if not courses:
-            return IBaseResponse()
+        if filter_list:
+            query = query.filter(
+                Q(name__in=filter_list) | Q(description_in=filter_list)
+            )
 
-        courses = serialize_object(courses)
+        return await parse_and_list(
+            query=query,
+            model=cls.model,
+            per_page=per_page,
+            page=page,
+            sort_by=sort_by,
+            order_by=order_by,
+            load_related=load_related,
+        )
 
-        return IBaseResponse(data=courses)
-    
     @classmethod
     async def get_one(cls, course_id: int):
         course = await cls.model.get_or_none(course_id=course_id)
-        
+
         if not course:
-            raise exc.NotFoundError('course not found')
-        
+            raise exc.NotFoundError("course not found")
+
     @classmethod
     async def create(cls, data_in: CourseIn):
         find_course = await cls.model.get_or_none(name=data_in.name)
@@ -34,9 +53,7 @@ class CourseService(object):
         if find_course:
             raise exc.DuplicateError(f"{find_course.name} already exist")
 
-        new_course = await cls.model.create(
-            **data_in.model_dump(), course_id=generate_random_8()
-        )
+        new_course = await cls.model.create(**data_in.model_dump())
 
         return new_course
 
