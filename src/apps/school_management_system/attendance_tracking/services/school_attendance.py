@@ -1,4 +1,6 @@
 from datetime import date
+from src.apps.school_management_system.student_management.models.student import Student
+from src.core.schemas.response import IBaseResponse
 from src.apps.school_management_system.teacher_management.models.teacher import Teacher
 from src.apps.school_management_system.attendance_tracking.schemas.teacher_attendance import TeacherSchoolAttendanceIn
 from src.core.services.parse_and_list import parse_and_list
@@ -12,6 +14,7 @@ from src.exceptions import exception as exc
 class SchoolAttendanceService(object):
     model = SchoolAttendance
     teacher_model = Teacher
+    student_model = Student
 
     @classmethod
     async def get_list(
@@ -45,7 +48,16 @@ class SchoolAttendanceService(object):
             order_by=order_by,
             load_related=load_related,
         )
-
+    
+    @classmethod
+    async def get_total_students_present(cls):
+        students_present = await cls.model.all().values('student_id')
+        
+        # if not students_present:
+        #     raise exc.BadDataError('Invalid data')
+        print(students_present)
+        return IBaseResponse(data=len(students_present))
+        
     @classmethod
     async def add_teacher_attendance(
         cls, data_in: TeacherSchoolAttendanceIn

@@ -10,14 +10,14 @@ from src.apps.school_management_system.student_management.services.student impor
 )
 
 
-student_router = APIRouter(prefix="/student", tags=["Student"])
+student_router = APIRouter(prefix="/students", tags=["Student"])
 
 
 @student_router.get("/", status_code=status.HTTP_200_OK)
 async def get_list(
     filter_string: str = "",
     per_page: int = 10,
-    page: int = 2,
+    page: int = 1,
     sort_by: SortBy = SortBy.ASCENDING,
     order_by: str = "first_name",
     load_related: bool = True,
@@ -31,7 +31,9 @@ async def get_list(
         load_related=load_related,
     )
 
-
+@student_router.get('/total', status_code=status.HTTP_200_OK)
+async def get_total_students():
+    return await service.get_total_students()
 @student_router.get("/{student_id}", status_code=status.HTTP_200_OK)
 async def get_one(student_id: str, load_related: bool = True):
     return await service.get_one(student_id=student_id, load_related=load_related)

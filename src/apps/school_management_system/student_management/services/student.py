@@ -27,7 +27,7 @@ class StudentService(object):
     @classmethod
     async def get_list(
         cls,
-        filter_string: str,
+        filter_string: str = "",
         per_page: int = 10,
         page: int = 1,
         sort_by: str = "ascending",
@@ -54,7 +54,13 @@ class StudentService(object):
             order_by=order_by,
             load_related=load_related
         )
-
+        
+    @classmethod
+    async def get_total_students(cls):
+        students = await cls.model.all().count()
+        
+        return IBaseResponse(data={'total_students': students})
+    
     @classmethod
     async def get_one(cls, student_id: str, load_related: bool = True) -> Union[dict, Model]:
         query = cls.model

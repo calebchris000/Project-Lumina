@@ -34,6 +34,11 @@ async def get_list(
         load_related=load_related,
     )
 
+
+@school_attendance_router.get('/total', status_code=status.HTTP_200_OK)
+async def get_total_student_attendance():
+    return await service.get_total_students_present()
+
 @school_attendance_router.post('/teachers/{teacher_id}', status_code=status.HTTP_200_OK)
 async def add_teacher_attendance(data_in: TeacherSchoolAttendanceIn):
     return await service.add_teacher_attendance(data_in=data_in)

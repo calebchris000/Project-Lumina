@@ -1,5 +1,8 @@
-import json
+from datetime import datetime
 from uuid import UUID
+from src.apps.school_management_system.student_management.services.student import (
+    StudentService,
+)
 from src.apps.school_management_system.course_subject.models.subject import Subject
 from src.apps.shared.serialize_object import serialize_object
 from src.core.schemas.response import IBaseResponse
@@ -7,6 +10,7 @@ from src.apps.school_management_system.student_management.models.student import 
 from src.apps.school_management_system.student_management.models.student_attendance import (
     StudentAttendance,
 )
+from tortoise.expressions import Q
 from src.exceptions import exception as exc
 
 
@@ -27,6 +31,20 @@ class StudentAttendanceService(object):
         attendances = await get_student.student_classes.all()
 
         return IBaseResponse(data=len(attendances))
+
+    @classmethod
+    async def get_all_present_today(cls):
+        current_day = datetime.now().strftime('%d')
+        all_attendances = await cls.attendance_model.filter(Q(created_at__day=current_day), Q(present=True))
+        unique_students_id = set()
+        unique_students = []
+
+        for attendant in all_attendances:
+            student_id = attendant.student_id
+            if student_id not in unique_students_id:
+                unique_students_id.add(student_id)
+                unique_students.append(attendant)
+        return IBaseResponse(data=len(unique_students))
 
     @classmethod
     async def add_attendance(
