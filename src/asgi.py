@@ -4,6 +4,8 @@ from fastapi.responses import RedirectResponse
 from src.database.lifespan import on_shutdown, start_db
 from src.core.routers.api.v1.routers import router as api_v1_router
 from src.config.settings import config
+from fastapi.middleware.cors import CORSMiddleware
+
 
 def app_description():
     _app = FastAPI(
@@ -11,6 +13,18 @@ def app_description():
         version="1.0",
         docs_url="/api/v1/docs",
         redirect_slashes=False,
+    )
+
+    origins = ["*"]
+    if config.backend_cors_origin:
+        origins = config.backend_cors_origin.split(",")
+
+    _app.add_middleware(
+        CORSMiddleware,
+        allow_origins=origins,
+        allow_credentials=True,
+        allow_methods=["*"],
+        allow_headers=["*"],
     )
 
     return _app
