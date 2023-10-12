@@ -23,6 +23,10 @@ async def get_list(
         order_by=order_by,
         load_related=load_related,
     )
+    
+@course_router.get('/total', status_code=status.HTTP_200_OK)
+async def get_total():
+    return await service.get_total()
 
 @course_router.post('/', status_code=status.HTTP_201_CREATED)
 async def create(data_in: CourseIn):
@@ -30,10 +34,10 @@ async def create(data_in: CourseIn):
 
 
 @course_router.put('/{course_id}', status_code=status.HTTP_200_OK)
-async def update(course_id: int, data_in: CourseIn):
+async def update(course_id: str, data_in: CourseIn):
     return await service.update(course_id=course_id, data_in=data_in)
 
 
 @course_router.delete('/{course_id}', status_code=status.HTTP_204_NO_CONTENT)
-async def delete(course_id: int):
+async def delete(course_id: str):
     return await service.delete(course_id=course_id)
