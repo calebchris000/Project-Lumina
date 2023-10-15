@@ -48,7 +48,7 @@ class TeacherService(object):
     @classmethod
     async def get_total(cls):
         teachers = await cls.model.all().count()
-        return IBaseResponse(data={'total_teachers': teachers})
+        return IBaseResponse(data=teachers)
 
     @classmethod
     async def get_one(cls, teacher_id: str, load_related: bool = True):
