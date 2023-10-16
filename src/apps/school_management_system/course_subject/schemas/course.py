@@ -1,6 +1,8 @@
+from uuid import UUID
 from pydantic import BaseModel
 
 
 class CourseIn(BaseModel):
     name: str = 'Mathematics'
-    description: str = 'The best subject'
+    class_id: UUID = None
+    description: str = 'A useful course'

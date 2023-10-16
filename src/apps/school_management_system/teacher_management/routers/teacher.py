@@ -30,6 +30,10 @@ async def get_all(
         load_related=load_related,
     )
 
+@teacher_router.get('/total', status_code=status.HTTP_200_OK)
+async def get_total():
+    return await service.get_total()
+
 
 @teacher_router.post("/", status_code=status.HTTP_201_CREATED)
 async def create_teacher(data_in: TeacherIn):

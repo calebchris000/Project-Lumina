@@ -54,7 +54,7 @@ class SchoolClassService(object):
         if school_class:
             raise exc.NotFoundError(f"{data_in.name} is already a class")
 
-        new_class = await cls.class_model.create(**data_in.model_dump())
+        new_class = await cls.class_model.create(**data_in.model_dump(exclude_none=True))
         return new_class
 
     @classmethod

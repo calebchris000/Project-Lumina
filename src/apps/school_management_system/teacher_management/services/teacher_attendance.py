@@ -1,4 +1,6 @@
+from datetime import datetime
 from uuid import UUID
+from tortoise.expressions import Q
 from src.apps.school_management_system.course_subject.models.subject import Subject
 from src.core.schemas.response import IBaseResponse
 from src.apps.school_management_system.teacher_management.models.teacher import Teacher
@@ -15,13 +17,29 @@ class TeacherAttendanceService(object):
 
     @classmethod
     async def get_all_attendances(cls, teacher_id: str):
-        teacher = await cls.teacher_model.filter(teacher_id=teacher_id)
+        teacher = await cls.teacher_model.filter(teacher_id=teacher_id).prefetch_related('teacher_attendances')
 
         if not teacher:
             raise exc.NotFoundError("teacher not found")
         all_attendances = await cls.model.filter(teacher_id=teacher_id).count()
 
         return IBaseResponse(data=all_attendances)
+
+    @classmethod
+    async def get_all_present_today(cls):
+        current_day = datetime.now().strftime("%d")
+        all_attendances = await cls.model.filter(
+            Q(created_at__day=current_day), Q(present=True)
+        )
+        unique_teacher_id = set()
+        unique_students = []
+
+        for attendant in all_attendances:
+            teacher_id = attendant.teacher_id
+            if teacher_id not in unique_teacher_id:
+                unique_teacher_id.add(teacher_id)
+                unique_students.append(attendant)
+        return IBaseResponse(data=len(unique_students))
 
     @classmethod
     async def add_attendance(

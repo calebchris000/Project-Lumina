@@ -11,7 +11,7 @@ student_attendance_router = APIRouter(prefix='/student-attendance', tags=['Stude
 async def get_attendance_counts(student_id: str):
     return await service.get_counts(student_id=student_id)
 
-@student_attendance_router.get('/present/total', status_code=status.HTTP_200_OK)
+@student_attendance_router.get('/present/today', status_code=status.HTTP_200_OK)
 async def get_all_present_today():
     return await service.get_all_present_today()
 

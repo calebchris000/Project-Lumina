@@ -1,3 +1,6 @@
+from src.apps.school_management_system.class_management.models.school_class import (
+    SchoolClass,
+)
 from src.core.services.parse_and_list import parse_and_list
 from src.core.enums.sort import SortBy
 from src.apps.shared.serialize_object import serialize_object
@@ -11,6 +14,7 @@ from tortoise.expressions import Q
 
 class CourseService(object):
     model = Course
+    class_model = SchoolClass
 
     @classmethod
     async def get_list(
@@ -19,7 +23,7 @@ class CourseService(object):
         per_page: int = 10,
         page: int = 1,
         sort_by: SortBy = "ascending",
-        order_by: str = "first_name",
+        order_by: str = "name",
         load_related: bool = True,
     ):
         query = cls.model
@@ -48,26 +52,36 @@ class CourseService(object):
 
     @classmethod
     async def create(cls, data_in: CourseIn):
-        find_course = await cls.model.get_or_none(name=data_in.name)
+        course = await cls.model.get_or_none(name=data_in.name)
 
-        if find_course:
-            raise exc.DuplicateError(f"{find_course.name} already exist")
+        if course:
+            raise exc.DuplicateError(f"{course.name} already exist")
 
         new_course = await cls.model.create(**data_in.model_dump())
 
         return new_course
-
+    
     @classmethod
-    async def update(cls, course_id: int, data_in: CourseIn):
-        find_course = await cls.model.get_or_none(course_id=course_id)
+    async def get_total(cls):
+        courses = await cls.model.all().count()
+        
+        return IBaseResponse(data=courses)
+    @classmethod
+    async def update(cls, course_id: str, data_in: CourseIn):
+        course = await cls.model.get_or_none(id=course_id)
 
-        if not find_course:
+        if not course:
             raise exc.NotFoundError("course not found")
 
-        await find_course.update_from_dict(
-            data_in.model_dump(exclude_unset=True)
-        ).save()
-        return find_course
+        school_class = await cls.class_model.get_or_none(id=data_in.class_id)
+        data = {
+            **data_in.model_dump(exclude_none=True),
+            "school_class_id": school_class.id,
+        }
+        if not school_class:
+            raise exc.NotFoundError("class not found")
+        await course.update_from_dict(data).save()
+        return course
 
     @classmethod
     async def delete(cls, course_id: int):

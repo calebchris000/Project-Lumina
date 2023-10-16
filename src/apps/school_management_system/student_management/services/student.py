@@ -59,7 +59,7 @@ class StudentService(object):
     async def get_total_students(cls):
         students = await cls.model.all().count()
         
-        return IBaseResponse(data={'total_students': students})
+        return IBaseResponse(data=students)
     
     @classmethod
     async def get_one(cls, student_id: str, load_related: bool = True) -> Union[dict, Model]:

@@ -1,4 +1,5 @@
 from uuid import UUID
+from src.core.schemas.response import IBaseResponse
 from src.apps.school_management_system.course_subject.models.course import Course
 from src.apps.school_management_system.course_subject.models.subject import Subject
 from src.apps.shared.generate_random_8 import generate_random_8
@@ -43,6 +44,11 @@ class TeacherService(object):
             order_by=order_by,
             load_related=load_related,
         )
+        
+    @classmethod
+    async def get_total(cls):
+        teachers = await cls.model.all().count()
+        return IBaseResponse(data=teachers)
 
     @classmethod
     async def get_one(cls, teacher_id: str, load_related: bool = True):
