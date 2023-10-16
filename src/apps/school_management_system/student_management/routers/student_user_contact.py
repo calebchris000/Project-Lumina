@@ -10,5 +10,5 @@ student_user_contact = APIRouter(prefix='/user_contact', tags=['User Contact'])
 
 
 @student_user_contact.post('/{student_id}', status_code=status.HTTP_201_CREATED)
-async def create_user_contact(student_id: int, data_in: UserContactIn):
+async def create_user_contact(student_id: str, data_in: UserContactIn):
     return await service.create_user_contact(student_id=student_id, data_in=data_in)

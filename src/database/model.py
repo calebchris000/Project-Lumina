@@ -19,7 +19,6 @@ class User(BaseModel):
     last_name = fields.CharField(null=False, max_length=50)
     date_of_birth = fields.DateField(null=False)
     gender = fields.CharEnumField(GENDERS, description='Sex of user')
-    date_of_enrollment = fields.DateField(null=False)
-    profile_image = fields.CharField(max_length=120,null=True)
+    profile_image = fields.CharField(max_length=500,null=True)
     home_address = fields.CharField(max_length=100)
     role = fields.CharEnumField(ROLES, default=ROLES.GUEST)
