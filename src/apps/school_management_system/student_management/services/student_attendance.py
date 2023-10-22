@@ -72,17 +72,17 @@ class StudentAttendanceService(object):
         return student
 
     @classmethod
-    async def get_attendance_in_week(cls, student_id: str):
+    async def get_attendance_by_date(cls, student_id: str, year: int, week_number: int):
         student = await cls.student_model.get_or_none(student_id=student_id)
 
         if not student:
             raise exc.NotFoundError("student not found")
-        previous_week = get_previous_week_dates()
-        previous_monday, previous_friday = previous_week
+        given_date = get_previous_week_dates(year=year, week_number=week_number)
+        monday, friday = [given_date[0], given_date[1]]
         student_attendances = await cls.attendance_model.filter(
             Q(student_id=student_id),
-            Q(created_at__gte=previous_monday),
-            Q(created_at__lte=previous_friday),
+            Q(created_at__gte=monday),
+            Q(created_at__lte=friday),
         )
         week_days = {0: 0, 1: 0, 2: 0, 3: 0, 4: 0}
         for each_date in student_attendances:

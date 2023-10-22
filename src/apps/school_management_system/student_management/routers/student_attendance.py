@@ -21,5 +21,5 @@ async def add_attendance(student_id: str, subject_id: UUID, present: bool = True
 
 
 @student_attendance_router.get('/{student_id}/attendances/week', status_code=status.HTTP_200_OK)
-async def get_attendance_in_week(student_id: str):
-    return await service.get_attendance_in_week(student_id=student_id)
+async def get_attendance_by_date(student_id: str, year: int, week_number: int):
+    return await service.get_attendance_by_date(student_id=student_id, year=year, week_number=week_number)
