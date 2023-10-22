@@ -11,4 +11,3 @@ def get_previous_week_dates(year = datetime.now().year, week_number=1):
     return [monday, friday]
     
     
-dat = get_previous_week_dates(2023, 42)
