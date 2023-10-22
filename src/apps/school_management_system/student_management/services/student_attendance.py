@@ -84,11 +84,6 @@ class StudentAttendanceService(object):
             Q(created_at__gte=previous_monday),
             Q(created_at__lte=previous_friday),
         )
-        datetime_to_date_result = [
-            attendance.created_at.strftime("%Y-%m-%d")
-            for attendance in student_attendances
-        ]
-        # return datetime_to_date_result
         week_days = {0: 0, 1: 0, 2: 0, 3: 0, 4: 0}
         for each_date in student_attendances:
             weekday = each_date.created_at.weekday()
