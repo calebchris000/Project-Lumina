@@ -18,3 +18,8 @@ async def get_all_present_today():
 @student_attendance_router.post('/{student_id}/subjects/{subject_id}', status_code=status.HTTP_201_CREATED)
 async def add_attendance(student_id: str, subject_id: UUID, present: bool = True, reason: str = ""):
     return await service.add_attendance(student_id=student_id, subject_id=subject_id, present=present, reason=reason)
+
+
+@student_attendance_router.get('/{student_id}/attendances/week', status_code=status.HTTP_200_OK)
+async def get_attendance_in_week(student_id: str):
+    return await service.get_attendance_in_week(student_id=student_id)
