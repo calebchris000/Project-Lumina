@@ -77,13 +77,13 @@ class StudentService(object):
 
         if check_student:
             raise exc.DuplicateError(
-                "Student with these names already exist",
+                f"Student {first_name} {last_name} already exist",
                 headers={"first_name": first_name, "last_name": last_name},
             )
 
-        new_student = await cls.model.create(**data_in.model_dump(), student_id=generate_random_8(prefix='ST'))
+        new_student = await cls.model.create(**data_in.model_dump(exclude_none=True), student_id=generate_random_8(prefix='ST'))
 
-        return new_student
+        return IResponseMessage(status_code=201, message=f'{new_student.first_name} {new_student.last_name} created')
 
 
     @classmethod

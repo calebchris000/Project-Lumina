@@ -22,3 +22,4 @@ class User(BaseModel):
     profile_image = fields.CharField(max_length=500,null=True)
     home_address = fields.CharField(max_length=100)
     role = fields.CharEnumField(ROLES, default=ROLES.GUEST)
+    
