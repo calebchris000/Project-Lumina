@@ -10,7 +10,11 @@ def get_week_dates(year = datetime.now().year, week_number=1):
     return [monday, friday]
 
 
-# def get_monthly_dates(year = datetime.now().year, month: int = 1):
-#     specified_date = datetime.now()
+def get_monthly_dates(year = datetime.now().year, month: int = 1):
+    specified_date = datetime.now()
     
-# calendar.month
+
+def run(year: int = 2023, month: int=10):
+    specified_date = date(year=year, month=month, day=1)
+    return specified_date
+

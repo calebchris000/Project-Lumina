@@ -1,5 +1,7 @@
-from datetime import datetime, timedelta
+from datetime import date, datetime, timedelta
+import pytz
 from uuid import UUID
+from src.shared.date.get_month_dates import get_monday_friday_pairs
 from src.shared.date.get_week_dates import get_week_dates
 from src.apps.school_management_system.student_management.services.student import (
     StudentService,
@@ -13,6 +15,7 @@ from src.apps.school_management_system.student_management.models.student_attenda
 )
 from tortoise.expressions import Q
 from src.exceptions import exception as exc
+import calendar
 
 
 class StudentAttendanceService(object):
@@ -90,3 +93,73 @@ class StudentAttendanceService(object):
             if weekday in week_days:
                 week_days[weekday] += 1
         return week_days
+
+    @classmethod
+    async def get_attendance_monthly(
+        cls,
+        student_id: str,
+        month: int = datetime.now().month,
+        year: int = datetime.now().year,
+    ):
+        student = await cls.student_model.get_or_none(student_id=student_id)
+        if not student:
+            raise exc.NotFoundError("student not found")
+        maximum_days_of_month = calendar.monthrange(year=year, month=month)[1]
+        attendances = await cls.attendance_model.filter(
+            Q(student_id=student_id),
+            Q(created_at__gte=datetime(year=year, month=month, day=1)),
+            Q(created_at__lte=datetime(year=year, month=month, day=maximum_days_of_month)),
+        )
+        date_pairs = get_monday_friday_pairs(year=year, month=month)
+        monthly_attendances = {}
+        
+        for index, date_pair in enumerate(date_pairs):
+            start_date = date_pair[0]
+            end_date = date_pair[1]
+            attendance_count = len([each_attendant for each_attendant in attendances if each_attendant.created_at >= start_date and each_attendant.created_at <= end_date])
+            monthly_attendances[index+1] = attendance_count
+        return monthly_attendances
+            
+            
+            
+    @classmethod
+    async def get_attendance_yearly(cls, student_id: str, year: int):
+        student = await cls.student_model.get_or_none(student_id=student_id)
+        if not student:
+            raise exc.NotFoundError("student not found")
+
+        attendances = await cls.attendance_model.filter(
+            Q(student_id=student_id),
+            Q(created_at__gte=datetime(year=year, month=1, day=1)),
+            Q(created_at__lte=datetime(year=year, month=12, day=31)),
+        )
+
+        months = {
+            1: 0,
+            2: 0,
+            3: 0,
+            4: 0,
+            5: 0,
+            6: 0,
+            7: 0,
+            8: 0,
+            9: 0,
+            10: 0,
+            11: 0,
+            12: 0,
+        }
+        timezone = pytz.timezone("Europe/Paris")
+        for i in range(1, 13):
+            total_days_in_month = calendar.monthrange(year=year, month=i)[1]
+            all_dates_in_month = [
+                each_date
+                for each_date in attendances
+                if each_date.created_at
+                >= datetime(year=year, month=i, day=1, hour=0, tzinfo=timezone)
+                and each_date.created_at
+                <= datetime(
+                    year=year, month=i, day=total_days_in_month, tzinfo=timezone
+                )
+            ]
+            months[i] = len(all_dates_in_month)
+        return months
