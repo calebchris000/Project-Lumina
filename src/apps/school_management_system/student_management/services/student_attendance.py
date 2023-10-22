@@ -1,6 +1,6 @@
 from datetime import datetime, timedelta
 from uuid import UUID
-from src.shared.date.get_previous_week_dates import get_previous_week_dates
+from src.shared.date.get_week_dates import get_week_dates
 from src.apps.school_management_system.student_management.services.student import (
     StudentService,
 )
@@ -72,12 +72,12 @@ class StudentAttendanceService(object):
         return student
 
     @classmethod
-    async def get_attendance_by_date(cls, student_id: str, year: int, week_number: int):
+    async def get_attendance_weekly(cls, student_id: str, year: int, week_number: int):
         student = await cls.student_model.get_or_none(student_id=student_id)
 
         if not student:
             raise exc.NotFoundError("student not found")
-        given_date = get_previous_week_dates(year=year, week_number=week_number)
+        given_date = get_week_dates(year=year, week_number=week_number)
         monday, friday = [given_date[0], given_date[1]]
         student_attendances = await cls.attendance_model.filter(
             Q(student_id=student_id),
