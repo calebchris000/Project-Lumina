@@ -64,7 +64,6 @@ class StudentAttendanceService(object):
         subject = await cls.subject_model.get_or_none(id=subject_id)
         if not subject:
             raise exc.NotFoundError("subject not found")
-        print(f"student {student_id} subject {subject_id}")
         student = await cls.attendance_model.create(
             student_id=student_id,
             present=present,

@@ -42,7 +42,6 @@ async def parse_and_list(
     results = await query
     items_list = []
 
-    # print(model._meta.m2m_fields)
     if load_related and results:
         for result in results:
             items = {}

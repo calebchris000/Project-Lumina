@@ -55,7 +55,6 @@ class SchoolAttendanceService(object):
         
         # if not students_present:
         #     raise exc.BadDataError('Invalid data')
-        print(students_present)
         return IBaseResponse(data=len(students_present))
         
     @classmethod

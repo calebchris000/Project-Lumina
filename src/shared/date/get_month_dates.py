@@ -32,4 +32,3 @@ def get_monday_friday_pairs(
 
     return date_pairs
 
-print(get_monday_friday_pairs(year=2023, month=11))

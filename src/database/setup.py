@@ -16,4 +16,3 @@ async def register_ab(app):
             break
         except Exception as e:
             sleep(5)
-            print("Failed to generate schema", e)

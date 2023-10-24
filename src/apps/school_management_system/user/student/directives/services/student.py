@@ -13,7 +13,6 @@ class StudentService(object):
     async def get_list(cls, filter_string: Optional[str] = ""):
         students = await cls.model.all()
         if filter_string:
-            print(filter_string)
             students = await cls.model.filter(
                 Q(first_name__in=filter_string)
                 | Q(last_name__in=filter_string)
